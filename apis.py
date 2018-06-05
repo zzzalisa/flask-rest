@@ -165,7 +165,8 @@ class UploadApi(Resource):
         newFileName+='.'+uploadFile.filename.split('.')[-1]
         uploadFile.save(os.path.join(settings.MEDIA_DIR,newFileName))  #FileStorage类的函数save（）
 
-        return {'msg':'上传成功','path':'/static/uploads/{}'.format(newFileName)}
+        return {'msg':'上传成功',
+                'path':'/static/uploads/{}'.format(newFileName)}
 
 
 # 将资源UserApi添加到api对象中【其中包括很多行为方法】并声明uri
