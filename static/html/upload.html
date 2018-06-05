@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传</title>
+</head>
+<body>
+<h1>添加图片资源</h1>
+<form action="">
+    <input type="hidden" name="url">
+    <input name="name" placeholder="图片名称"><br>
+    <div id="preImgDiv">
+        <button type="button" onclick="file.click()">选择图片</button>
+        <br>
+        <img src="/static/images/ms2.jpg" alt="" id="preImg" width="100" height="100">
+    </div>
+    <button type="button" onclick="addImg()">提交</button>
+</form>
+<input id="file" type="file" onchange="uploadImg(this.files[0])" style="display: none">
+</body>
+<script src="/static/js/jquery.min.js"></script>
+<script>
+    function uploadImg(file) {
+        alert('正在上传图片。。。');
+        console.log(file);
+
+        var formdata = new FormData();
+        formdata.append('img',file);
+
+        $.ajax('/upload/',{
+            type:'post',
+            data:formdata,
+            contentType:false, //不声明上传的类型,formdata的数据类型为multipart-form-data
+            processData:false,  // 不再进行表单数据的编码
+            dataType:'json',
+            success:function (data) {
+                alert(data.msg);
+
+                // 显示上传图片
+                $('#preImg').attr('src',data.path);
+                //将上传图片显示到form的隐藏域中
+                $('form>input[name="url"]').val(data.path)
+            }
+        })
+    }
+    function addImg() {
+        $.ajax('/images/',{
+            type:'post',
+            data:$('form').serialize(),
+            dataType:'json',
+            success:function (data) {
+                alert(data.msg);
+            }
+        })
+    }
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
